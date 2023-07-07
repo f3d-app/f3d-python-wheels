@@ -15,8 +15,12 @@ jobs:
         with:
           submodules: 'recursive'
 
-      - name: Setup Ninja
-        uses: ashutoshvarma/setup-ninja@master
+      - name: Setup Ninja Windows
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: |
+          choco install ninja
+          echo CMAKE_GENERATOR=Ninja >> $GITHUB_ENV
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.13.1
