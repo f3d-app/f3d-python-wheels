@@ -17,6 +17,7 @@ jobs:
           submodules: true
 
       - name: Build wheels
+        working-directory: ${{github.workspace}}/source
         uses: pypa/cibuildwheel@v2.13.1
         with:
           package-dir: ${{github.workspace}}/source
