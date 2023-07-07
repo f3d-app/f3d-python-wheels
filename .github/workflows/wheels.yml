@@ -35,7 +35,7 @@ jobs:
           choco install ninja
           echo CMAKE_GENERATOR=Ninja >> $GITHUB_ENV
 
-      - name: Setup msvc Windows
+      - name: Setup MSVC Windows
         if: runner.os == 'Windows'
         uses: TheMrMilchmann/setup-msvc-dev@v2
         with:
@@ -48,7 +48,9 @@ jobs:
           output-dir: ${{github.workspace}}/wheelhouse
           config-file: ${{github.workspace}}/f3d/pyproject.toml
         env:
-          CIBW_SKIP: '*-win32 *_i686'
+          CIBW_ARCHS: 'native'
+          CIBW_ENVIRONMENT: CMAKE_PREFIX_PATH=../f3d-superbuild-build/install
+          CIBW_ENVIRONMENT_PASS_LINUX: CMAKE_PREFIX_PATH
           CIBW_BEFORE_ALL: >
             rm -rf _skbuild &&
             cmake -S f3d-superbuild -B f3d-superbuild-build
