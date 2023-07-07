@@ -43,7 +43,6 @@ jobs:
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.13.1
-        shell: bash
         with:
           package-dir: ${{github.workspace}}/f3d
           output-dir: ${{github.workspace}}/wheelhouse
