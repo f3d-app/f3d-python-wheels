@@ -1,0 +1,23 @@
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel",
+    "setuptools_scm>=6.2",
+    "scikit-build",
+    "cmake>=3.21",
+    "ninja",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+write_to = "../python_packaging/_version.py"
+root = "f3d"
+fallback_version = "2.1.0"
+
+[tool.cibuildwheel]
+before-all = [
+  "rm -rf _skbuild",
+  "cmake -S f3d-superbuild -B f3d-superbuild-build -DBUILD_SHARED_LIBS=OFF -DENABLE_f3d=OFF -DENABLE_alembic=ON -DENABLE_assimp=ON -DENABLE_draco=ON -DENABLE_occt=OFF -DENABLE_openexr=ON -DENABLE_ospray=OFF -DENABLE_vtk=ON -DENABLE_pybind11=ON -DUSE_SYSTEM_python3=ON",
+  "cmake --build f3d-superbuild-build",
+]
+skip = "*-win32 *_i686"

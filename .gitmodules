@@ -1,0 +1,6 @@
+[submodule "f3d-superbuild"]
+	path = f3d-superbuild
+	url = git@github.com:Meakk/f3d-superbuild.git
+[submodule "f3d"]
+	path = f3d
+	url = git@github.com:Meakk/f3d.git
