@@ -44,6 +44,7 @@ setup(
     cmake_args=[
         "-DCMAKE_PREFIX_PATH:PATH=" + str(here / "f3d-superbuild-build/install"),
         "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_OSX_DEPLOYMENT_TARGET=10.15",
         "-DBUILD_SHARED_LIBS=OFF",
         "-DF3D_BINDINGS_PYTHON=ON",
         "-DF3D_PLUGIN_BUILD_EXODUS=OFF",
