@@ -13,16 +13,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          path: 'source'
           submodules: true
 
       - name: Build wheels
-        working-directory: ${{github.workspace}}/source
         uses: pypa/cibuildwheel@v2.13.1
         with:
-          package-dir: ${{github.workspace}}/source
+          package-dir: ${{github.workspace}}
           output-dir: ${{github.workspace}}/wheelhouse
-          config-file: ${{github.workspace}}/source/pyproject.toml
+          config-file: ${{github.workspace}}/pyproject.toml
 
       - uses: actions/upload-artifact@v3
         with:
