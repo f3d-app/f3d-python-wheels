@@ -14,8 +14,17 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          submodules: 'recursive'
+          repository: 'Meakk/f3d-superbuild'
+          ref: 'hack-for-wheels'
+          submodules: true
+          path: 'f3d-superbuild'
+
+      - uses: actions/checkout@v3
+        with:
+          repository: 'Meakk/f3d'
+          ref: 'python'
           fetch-depth: 0
+          path: 'f3d'
 
       - name: Setup Ninja Windows
         if: runner.os == 'Windows'
@@ -33,10 +42,28 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.13.1
         with:
-          package-dir: ${{github.workspace}}
+          package-dir: ${{github.workspace}}/f3d
           output-dir: ${{github.workspace}}/wheelhouse
-          config-file: ${{github.workspace}}/pyproject.toml
+          config-file: ${{github.workspace}}/f3d/pyproject.toml
+        env:
+          CIBW_SKIP: '*-win32 *_i686'
+          CIBW_BEFORE_ALL: |
+            rm -rf _skbuild &&
+            cmake -S f3d-superbuild -B f3d-superbuild-build
+              -DCMAKE_BUILD_TYPE=Release
+              -DBUILD_SHARED_LIBS=OFF
+              -DENABLE_f3d=OFF
+              -DENABLE_alembic=ON
+              -DENABLE_assimp=ON
+              -DENABLE_draco=ON
+              -DENABLE_occt=OFF
+              -DENABLE_openexr=ON
+              -DENABLE_ospray=OFF
+              -DENABLE_vtk=ON
+              -DENABLE_pybind11=ON &&
+            cmake --build f3d-superbuild-build
 
       - uses: actions/upload-artifact@v3
         with:
+          name: ${{ runner.os }}-wheels
           path: ./wheelhouse/*.whl
