@@ -22,6 +22,12 @@ jobs:
           choco install ninja
           echo CMAKE_GENERATOR=Ninja >> $GITHUB_ENV
 
+      - name: Setup msvc Windows
+        if: runner.os == 'Windows'
+        uses: TheMrMilchmann/setup-msvc-dev@v2
+        with:
+          arch: x64
+
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.13.1
         with:
