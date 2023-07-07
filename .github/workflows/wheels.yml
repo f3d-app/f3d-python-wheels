@@ -10,10 +10,12 @@ jobs:
       matrix:
         os: [ubuntu-20.04, windows-2019, macOS-11]
 
+    # fetch-depth: 0 is required to get the tags used to determine f3d version
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: 'recursive'
+          fetch-depth: 0
 
       - name: Setup Ninja Windows
         if: runner.os == 'Windows'
