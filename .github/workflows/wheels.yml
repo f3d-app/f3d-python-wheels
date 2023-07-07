@@ -52,17 +52,17 @@ jobs:
           CIBW_BEFORE_ALL: >
             rm -rf _skbuild &&
             cmake -S f3d-superbuild -B f3d-superbuild-build
-              -DCMAKE_BUILD_TYPE=Release
-              -DBUILD_SHARED_LIBS=OFF
-              -DENABLE_f3d=OFF
-              -DENABLE_alembic=ON
-              -DENABLE_assimp=ON
-              -DENABLE_draco=ON
-              -DENABLE_occt=OFF
-              -DENABLE_openexr=ON
-              -DENABLE_ospray=OFF
-              -DENABLE_vtk=ON
-              -DENABLE_pybind11=ON &&
+            -DCMAKE_BUILD_TYPE=Release
+            -DBUILD_SHARED_LIBS=OFF
+            -DENABLE_f3d=OFF
+            -DENABLE_alembic=ON
+            -DENABLE_assimp=ON
+            -DENABLE_draco=ON
+            -DENABLE_occt=OFF
+            -DENABLE_openexr=ON
+            -DENABLE_ospray=OFF
+            -DENABLE_vtk=ON
+            -DENABLE_pybind11=ON &&
             cmake --build f3d-superbuild-build
 
       - uses: actions/upload-artifact@v3
