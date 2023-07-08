@@ -52,7 +52,6 @@ jobs:
           CIBW_ENVIRONMENT: CMAKE_PREFIX_PATH=../f3d-superbuild-build/install
           CIBW_ENVIRONMENT_PASS_LINUX: CMAKE_PREFIX_PATH
           CIBW_BEFORE_ALL: >
-            rm -rf _skbuild &&
             cmake -S f3d-superbuild -B f3d-superbuild-build
             -DCMAKE_BUILD_TYPE=Release
             -DBUILD_SHARED_LIBS=OFF
