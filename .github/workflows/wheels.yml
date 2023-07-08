@@ -49,7 +49,7 @@ jobs:
           config-file: ${{github.workspace}}/f3d/pyproject.toml
         env:
           CIBW_ARCHS: 'native'
-          CIBW_ENVIRONMENT: CMAKE_PREFIX_PATH=../f3d-superbuild-build/install
+          CIBW_ENVIRONMENT: CMAKE_PREFIX_PATH=../../../../f3d-superbuild-build/install
           CIBW_ENVIRONMENT_PASS_LINUX: CMAKE_PREFIX_PATH
           CIBW_BEFORE_ALL: >
             cmake -S f3d-superbuild -B f3d-superbuild-build
