@@ -15,8 +15,8 @@ jobs:
       - name: Checkout f3d-superbuild
         uses: actions/checkout@v3
         with:
-          repository: 'Meakk/f3d-superbuild'
-          ref: 'hack-for-wheels'
+          repository: 'f3d-app/f3d-superbuild'
+          ref: 'main'
           submodules: true
           path: 'f3d-superbuild'
 
@@ -27,6 +27,12 @@ jobs:
           ref: 'python'
           fetch-depth: 0
           path: 'f3d'
+
+      - name: Recover VTK version to build
+        working-directory: ${{github.workspace}}
+        shell: bash
+        run: |
+          echo VTK_COMMIT_SHA=`cat ./f3d/.github/actions/vtk_commit_sha` >> $GITHUB_ENV
 
       - name: Setup Ninja Windows
         if: runner.os == 'Windows'
@@ -48,7 +54,7 @@ jobs:
           output-dir: ${{github.workspace}}/wheelhouse
           config-file: ${{github.workspace}}/f3d/pyproject.toml
         env:
-          CIBW_ARCHS: 'native'
+          CIBW_ARCHS: 'auto64'
           CIBW_ENVIRONMENT: CMAKE_PREFIX_PATH=../../../../f3d-superbuild-build/install
           CIBW_ENVIRONMENT_PASS_LINUX: CMAKE_PREFIX_PATH
           CIBW_BEFORE_ALL: >
@@ -62,8 +68,11 @@ jobs:
             -DENABLE_occt=OFF
             -DENABLE_openexr=ON
             -DENABLE_ospray=OFF
+            -DENABLE_pybind11=ON
+            -DENABLE_tbb=OFF
             -DENABLE_vtk=ON
-            -DENABLE_pybind11=ON &&
+            -Dvtk_SOURCE_SELECTION=git
+            -Dvtk_GIT_TAG=${{ env.VTK_COMMIT_SHA }} &&
             cmake --build f3d-superbuild-build
 
       - uses: actions/upload-artifact@v3
