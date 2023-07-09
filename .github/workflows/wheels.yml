@@ -47,6 +47,12 @@ jobs:
         with:
           arch: x64
 
+      - name: Set up QEMU
+        if: runner.os == 'Linux'
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: all
+
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.13.1
         with:
@@ -54,7 +60,9 @@ jobs:
           output-dir: ${{github.workspace}}/wheelhouse
           config-file: ${{github.workspace}}/f3d/pyproject.toml
         env:
-          CIBW_ARCHS: 'auto64'
+          CIBW_ARCHS_LINUX: x86_64 aarch64
+          CIBW_ARCHS_MACOS: x86_64 arm64
+          CIBW_ARCHS_WINDOWS: AMD64 ARM64
           CIBW_ENVIRONMENT: CMAKE_PREFIX_PATH=../../../../f3d-superbuild-build/install
           CIBW_ENVIRONMENT_PASS_LINUX: CMAKE_PREFIX_PATH
           CIBW_BEFORE_ALL: >
@@ -65,12 +73,13 @@ jobs:
             -DENABLE_alembic=ON
             -DENABLE_assimp=ON
             -DENABLE_draco=ON
-            -DENABLE_occt=OFF
+            -DENABLE_occt=ON
             -DENABLE_openexr=ON
             -DENABLE_ospray=OFF
             -DENABLE_pybind11=ON
             -DENABLE_tbb=OFF
             -DENABLE_vtk=ON
+            -DOCCT_ENABLE_COLORING=OFF
             -Dvtk_SOURCE_SELECTION=git
             -Dvtk_GIT_TAG=${{ env.VTK_COMMIT_SHA }} &&
             cmake --build f3d-superbuild-build
